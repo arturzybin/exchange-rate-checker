@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { TCurrencies } from './typescript-types';
 
 import { CurrencyChart } from './components/CurrencyChart';
+import { Title } from './components/Title';
 
 
 export const App: React.FC = () => {
    const [currencies, setCurrencies] = useState<TCurrencies>()
-   const [base, setFirstCurrency] = useState<string>('USD')
-   const [currency, setSecondCurrency] = useState<string>('RUB')
+   const [base, setBase] = useState<string>('USD')
+   const [currency, setCurrency] = useState<string>('RUB')
    const [currencyData, setSecondCurrencyData] = useState<number[]>()
 
 
@@ -28,8 +29,18 @@ export const App: React.FC = () => {
       currencyFullName = (currencies as {[key: string]: any} )[currency]
    }
 
+   let currentRate
+   if (currencyData) {
+      currentRate = currencyData[currencyData.length - 1]
+   }
+
    return (
       <div className="app">
+         <Title
+            base={baseFullName}
+            currency={currencyFullName}
+            rate={currentRate as number}
+         />
          <CurrencyChart
             data={currencyData as number[]}
             base={baseFullName}
@@ -63,7 +74,7 @@ async function fetchCurrencyData(base: string, currency: string) {
       responsesData.forEach((data) => currencyData.push(data.rates[currency]))
    })
 
-   return currencyData
+   return currencyData.reverse()
 }
 
 
