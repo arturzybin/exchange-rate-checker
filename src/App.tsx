@@ -3,6 +3,7 @@ import { TCurrencies } from './typescript-types';
 
 import { CurrencyChart } from './components/CurrencyChart';
 import { Title } from './components/Title';
+import { Calculator } from './components/Calculator';
 
 
 export const App: React.FC = () => {
@@ -41,6 +42,7 @@ export const App: React.FC = () => {
             currency={currencyFullName}
             rate={currentRate as number}
          />
+         <Calculator rate={currentRate as number} />
          <CurrencyChart
             data={currencyData as number[]}
             base={baseFullName}
