@@ -6,9 +6,9 @@ import { CurrencyChart } from './components/CurrencyChart';
 
 export const App: React.FC = () => {
    const [currencies, setCurrencies] = useState<TCurrencies>()
-   const [firstCurrency, setFirstCurrency] = useState<string>('USD')
-   const [secondCurrency, setSecondCurrency] = useState<string>('RUB')
-   const [secondCurrencyData, setSecondCurrencyData] = useState<number[]>()
+   const [base, setFirstCurrency] = useState<string>('USD')
+   const [currency, setSecondCurrency] = useState<string>('RUB')
+   const [currencyData, setSecondCurrencyData] = useState<number[]>()
 
 
    useEffect(() => {
@@ -16,24 +16,24 @@ export const App: React.FC = () => {
    }, [])
 
    useEffect(() => {
-      fetchCurrencyData(firstCurrency, secondCurrency)
+      fetchCurrencyData(base, currency)
          .then(setSecondCurrencyData)
-   }, [firstCurrency, secondCurrency])
+   }, [base, currency])
 
 
-   let base = firstCurrency
-   let currency = secondCurrency
+   let baseFullName = base
+   let currencyFullName = currency
    if (currencies) {
-      base = (currencies as {[key: string]: any} )[firstCurrency]
-      currency = (currencies as {[key: string]: any} )[secondCurrency]
+      baseFullName = (currencies as {[key: string]: any} )[base]
+      currencyFullName = (currencies as {[key: string]: any} )[currency]
    }
 
    return (
       <div className="app">
          <CurrencyChart
-            data={secondCurrencyData as number[]}
-            base={base}
-            currency={currency}
+            data={currencyData as number[]}
+            base={baseFullName}
+            currency={currencyFullName}
          />
       </div>
    );
