@@ -12,7 +12,7 @@ export const CurrencyChart: React.FC<IProps> = ({ data, base, currency }) => {
    useEffect(() => {
       const months: string[] = []
 
-      for (let i = 0; i < 7; i++) {
+      for (let i = 6; i >=0; i--) {
          const date = new Date();
          date.setMonth(date.getMonth() - i)
          months.push(date.toLocaleString('default', { month: 'long' }))
@@ -38,9 +38,9 @@ function drawChart(data: number[], base: string, currency: string, months: strin
          datasets: [{
             label: `${currency} in ${base}`,
             data,
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            borderColor: '#4E4E4E',
+            borderWidth: 3
          }]
       }
    })

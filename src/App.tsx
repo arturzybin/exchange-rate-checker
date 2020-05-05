@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { TCurrencies } from './typescript-types';
 
+import './scss/style.scss';
+
 import { CurrencyChart } from './components/CurrencyChart';
 import { Title } from './components/Title';
 import { Calculator } from './components/Calculator';
+import { Select } from './components/Select';
 
 
 export const App: React.FC = () => {
@@ -23,11 +26,25 @@ export const App: React.FC = () => {
    }, [base, currency])
 
 
+   function handleBaseChange(event: React.FormEvent<HTMLSelectElement>): void {
+      if (event.currentTarget.value === currency) {
+         setCurrency(base)
+      }
+      setBase(event.currentTarget.value)
+   }
+   function handleCurrencyChange(event: React.FormEvent<HTMLSelectElement>): void {
+      if (event.currentTarget.value === base) {
+         setBase(currency)
+      }
+      setCurrency(event.currentTarget.value)
+   }
+
+
    let baseFullName = base
    let currencyFullName = currency
    if (currencies) {
-      baseFullName = (currencies as {[key: string]: any} )[base]
-      currencyFullName = (currencies as {[key: string]: any} )[currency]
+      baseFullName = (currencies as { [key: string]: any })[base]
+      currencyFullName = (currencies as { [key: string]: any })[currency]
    }
 
    let currentRate
@@ -42,7 +59,16 @@ export const App: React.FC = () => {
             currency={currencyFullName}
             rate={currentRate as number}
          />
-         <Calculator rate={currentRate as number} />
+         <table><tbody>
+            <Calculator rate={currentRate as number} />
+            <Select
+               currencies={currencies as TCurrencies}
+               base={base}
+               currency={currency}
+               handleBaseChange={handleBaseChange}
+               handleCurrencyChange={handleCurrencyChange}
+            />
+         </tbody></table>
          <CurrencyChart
             data={currencyData as number[]}
             base={baseFullName}
