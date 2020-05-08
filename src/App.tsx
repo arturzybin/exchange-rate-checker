@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TCurrencies } from './typescript-types';
+import { ICurrenciesNames } from './typescript-types';
 
 import './scss/style.scss';
 
@@ -10,7 +10,7 @@ import { Select } from './components/Select';
 
 
 export const App: React.FC = () => {
-   const [currencies, setCurrencies] = useState<TCurrencies>()
+   const [currenciesNames, setCurrencies] = useState<ICurrenciesNames>()
    const [base, setBase] = useState<string>('USD')
    const [currency, setCurrency] = useState<string>('RUB')
    const [currencyData, setSecondCurrencyData] = useState<number[]>()
@@ -40,17 +40,10 @@ export const App: React.FC = () => {
    }
 
 
-   let baseFullName = base
-   let currencyFullName = currency
-   if (currencies) {
-      baseFullName = (currencies as { [key: string]: any })[base]
-      currencyFullName = (currencies as { [key: string]: any })[currency]
-   }
+   const baseFullName = currenciesNames ? currenciesNames[base] : base
+   const currencyFullName = currenciesNames ? currenciesNames[currency] : currency
 
-   let currentRate
-   if (currencyData) {
-      currentRate = currencyData[currencyData.length - 1]
-   }
+   const currentRate = currencyData ? currencyData[currencyData.length - 1] : null
 
    return (
       <div className="app">
@@ -62,7 +55,7 @@ export const App: React.FC = () => {
          <table><tbody>
             <Calculator rate={currentRate as number} />
             <Select
-               currencies={currencies as TCurrencies}
+               currenciesNames={currenciesNames as ICurrenciesNames}
                base={base}
                currency={currency}
                handleBaseChange={handleBaseChange}
@@ -81,11 +74,11 @@ export const App: React.FC = () => {
 
 
 async function fetchCurrencies() {
-   let data: TCurrencies
+   let data: ICurrenciesNames
 
    const response = await fetch('https://openexchangerates.org/api/currencies.json')
    if (!response.ok) {
-      console.error('Error loading currencies')
+      console.error('Error loading currencies names')
    }
    data = await response.json()
 
