@@ -45,6 +45,7 @@ export const App: React.FC = () => {
       setCurrencyData(data)
 
       setCurrency(newCurrency)
+      // paid api version required
       // if (newCurrency === base) {
       //    setBase(currency)
       // }
@@ -58,21 +59,23 @@ export const App: React.FC = () => {
 
    return (
       <div className="app">
-         <Title
-            base={baseFullName}
-            currency={currencyFullName}
-            rate={currentRate}
-         />
-         <table><tbody>
-            <Calculator rate={currentRate as number} />
-            <Select
-               currenciesNames={currenciesNames}
-               base={base}
-               currency={currency}
-               handleBaseChange={handleBaseChange}
-               handleCurrencyChange={handleCurrencyChange}
+         <div className="content">
+            <Title
+               base={baseFullName}
+               currency={currencyFullName}
+               rate={currentRate}
             />
-         </tbody></table>
+            <table><tbody>
+               <Calculator rate={currentRate as number} />
+               <Select
+                  currenciesNames={currenciesNames}
+                  base={base}
+                  currency={currency}
+                  handleBaseChange={handleBaseChange}
+                  handleCurrencyChange={handleCurrencyChange}
+               />
+            </tbody></table>
+         </div>
          <CurrencyChart
             currencyData={currencyData as number[]}
             base={baseFullName}

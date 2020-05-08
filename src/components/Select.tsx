@@ -47,6 +47,7 @@ export const Select: React.FC<IProps> = ({ currenciesNames, base, currency, hand
    return (
       <tr className="select">
          <td><select className="select__base" onChange={handleBaseChange}></select></td>
+         <td className="spacing"></td>
          <td><select className="select__currency" onChange={handleCurrencyChange}></select></td>
       </tr>
    )

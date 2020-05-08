@@ -35,6 +35,7 @@ export const Calculator: React.FC<{ rate: number }> = ({ rate }) => {
                autoFocus
             />
          </td>
+         <td className="spacing"></td>
          <td>
             <input
                className="calculator__currency"
