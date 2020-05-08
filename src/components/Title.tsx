@@ -3,7 +3,7 @@ import React from 'react'
 interface IProps {
    base: string,
    currency: string,
-   rate: number
+   rate: number | null
 }
 
 export const Title: React.FC<IProps> = ({ base, currency, rate }) => (

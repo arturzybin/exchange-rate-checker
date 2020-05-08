@@ -13,30 +13,41 @@ export const App: React.FC = () => {
    const [currenciesNames, setCurrencies] = useState<ICurrenciesNames>()
    const [base, setBase] = useState<string>('USD')
    const [currency, setCurrency] = useState<string>('RUB')
-   const [currencyData, setSecondCurrencyData] = useState<number[]>()
+   const [currencyData, setCurrencyData] = useState<number[]>()
 
 
    useEffect(() => {
-      fetchCurrencies().then(setCurrencies)
+      fetchCurrenciesNames().then(setCurrencies)
    }, [])
 
    useEffect(() => {
       fetchCurrencyData(base, currency)
-         .then(setSecondCurrencyData)
-   }, [base, currency])
+         .then(setCurrencyData)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [])
 
 
-   function handleBaseChange(event: React.FormEvent<HTMLSelectElement>): void {
-      if (event.currentTarget.value === currency) {
+   async function handleBaseChange(event: React.FormEvent<HTMLSelectElement>) {
+      const newBase = event.currentTarget.value
+
+      const data = await fetchCurrencyData(newBase, currency)
+      setCurrencyData(data)
+
+      setBase(newBase)
+      if (newBase === currency) {
          setCurrency(base)
       }
-      setBase(event.currentTarget.value)
    }
-   function handleCurrencyChange(event: React.FormEvent<HTMLSelectElement>): void {
-      if (event.currentTarget.value === base) {
-         setBase(currency)
-      }
-      setCurrency(event.currentTarget.value)
+   async function handleCurrencyChange(event: React.FormEvent<HTMLSelectElement>) {
+      const newCurrency = event.currentTarget.value
+
+      const data = await fetchCurrencyData(base, newCurrency)
+      setCurrencyData(data)
+
+      setCurrency(newCurrency)
+      // if (newCurrency === base) {
+      //    setBase(currency)
+      // }
    }
 
 
@@ -50,12 +61,12 @@ export const App: React.FC = () => {
          <Title
             base={baseFullName}
             currency={currencyFullName}
-            rate={currentRate as number}
+            rate={currentRate}
          />
          <table><tbody>
             <Calculator rate={currentRate as number} />
             <Select
-               currenciesNames={currenciesNames as ICurrenciesNames}
+               currenciesNames={currenciesNames}
                base={base}
                currency={currency}
                handleBaseChange={handleBaseChange}
@@ -63,7 +74,7 @@ export const App: React.FC = () => {
             />
          </tbody></table>
          <CurrencyChart
-            data={currencyData as number[]}
+            currencyData={currencyData as number[]}
             base={baseFullName}
             currency={currencyFullName}
          />
@@ -73,7 +84,7 @@ export const App: React.FC = () => {
 
 
 
-async function fetchCurrencies() {
+async function fetchCurrenciesNames(): Promise<ICurrenciesNames> {
    let data: ICurrenciesNames
 
    const response = await fetch('https://openexchangerates.org/api/currencies.json')
@@ -86,7 +97,7 @@ async function fetchCurrencies() {
 }
 
 
-async function fetchCurrencyData(base: string, currency: string) {
+async function fetchCurrencyData(base: string, currency: string): Promise<number[]> {
    const currencyData: number[] = []
 
    const fetchPromises = getFetchCurrencyDataPromises(base, currency)
@@ -108,7 +119,7 @@ function getFetchCurrencyDataPromises(base: string, currency: string): Promise<a
       const date = currentDate.toJSON().slice(0, 10)
 
       const url = new URL('https://openexchangerates.org/api/historical/' + date + '.json')
-      url.searchParams.set('app_id', '814335798c7149bfb3caad3be6e1acb2')
+      url.searchParams.set('app_id', 'e785e47f3cc94b4bbcf8ec131d31a076')
       url.searchParams.set('base', base)
       url.searchParams.set('symbols', currency)
 

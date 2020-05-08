@@ -15,13 +15,13 @@ export const Calculator: React.FC<{ rate: number }> = ({ rate }) => {
    function handleBaseChange(event: React.FormEvent<HTMLInputElement>): void {
       const value = validateInput(event.currentTarget.value)
       setBaseValue(value)
-      setCurrencyValue(validateInput((+value * rate).toString()))
+      setCurrencyValue( validateInput((+value * rate).toString()) )
    }
 
    function handleCurrencyChange(event: React.FormEvent<HTMLInputElement>): void {
       const value = validateInput(event.currentTarget.value)
       setCurrencyValue(value)
-      setBaseValue(validateInput((+value / rate).toString()))
+      setBaseValue( validateInput((+value / rate).toString()) )
    }
 
    return (

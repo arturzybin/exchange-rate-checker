@@ -3,12 +3,12 @@ import Chart from 'chart.js'
 
 
 interface IProps {
-   data: number[],
+   currencyData: number[],
    base: string,
    currency: string
 }
 
-export const CurrencyChart: React.FC<IProps> = ({ data, base, currency }) => {
+export const CurrencyChart: React.FC<IProps> = ({ base, currency, currencyData }) => {
    useEffect(() => {
       const months: string[] = []
 
@@ -18,8 +18,8 @@ export const CurrencyChart: React.FC<IProps> = ({ data, base, currency }) => {
          months.push(date.toLocaleString('default', { month: 'long' }))
       }
 
-      drawChart(data, base, currency, months)
-   }, [data, base, currency])
+      drawChart(base, currency, currencyData, months)
+   }, [base, currency, currencyData])
 
    return (
       <canvas id="chart" className="chart"></canvas>
@@ -27,7 +27,7 @@ export const CurrencyChart: React.FC<IProps> = ({ data, base, currency }) => {
 }
 
 
-function drawChart(data: number[], base: string, currency: string, months: string[]) {
+function drawChart(base: string, currency: string, currencyData: number[], months: string[]) {
    const canvas: any = document.getElementById('chart')
    if (!canvas) return
 
@@ -37,7 +37,7 @@ function drawChart(data: number[], base: string, currency: string, months: strin
          labels: months,
          datasets: [{
             label: `${currency} in ${base}`,
-            data,
+            data: currencyData,
             backgroundColor: 'rgba(0, 0, 0, 0.4)',
             borderColor: '#4E4E4E',
             borderWidth: 3

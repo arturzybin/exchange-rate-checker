@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { ICurrenciesNames } from '../typescript-types'
 
 interface IProps {
-   currenciesNames: ICurrenciesNames
+   currenciesNames: ICurrenciesNames | undefined
    base: string,
    currency: string,
    handleBaseChange: (event: React.FormEvent<HTMLSelectElement>) => void,
@@ -31,8 +31,8 @@ export const Select: React.FC<IProps> = ({ currenciesNames, base, currency, hand
          if (currency === shortName) {
             currencyOption.selected = true
          }
-         //paid api version required
-         //baseSelect?.append(baseOption)
+
+         // baseSelect?.append(baseOption) <== paid api version required
          currencySelect?.append(currencyOption)
       })
 
